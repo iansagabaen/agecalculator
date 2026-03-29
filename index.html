@@ -1,7 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
+    <meta name="widget-compatible" content="true">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <script src="https://widgetweb.app/js-widget.js"></script>
+
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
@@ -12,6 +17,8 @@
             display: flex;
             flex-direction: column;
             gap: 12px;
+            /* Added a text shadow so it's readable on light wallpapers */
+            text-shadow: 0px 1px 2px rgba(0,0,0,0.5);
         }
         .item {
             display: flex;
@@ -26,7 +33,7 @@
             letter-spacing: -0.2px;
         }
         .age-badge {
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.2);
             padding: 2px 8px;
             border-radius: 6px;
             font-size: 13px;
@@ -34,7 +41,7 @@
         }
         .date-string {
             font-size: 12px;
-            opacity: 0.6;
+            opacity: 0.8;
             margin-top: 2px;
         }
     </style>
@@ -74,16 +81,22 @@
             const formatted = formatDate(person.date);
             const label = person.isAnniversary ? "Years" : "Years old";
             
-            container.innerHTML += `
-                <div class="item">
-                    <div>
-                        <div class="name">${person.name}</div>
-                        <div class="date-string">${formatted}</div>
-                    </div>
-                    <div class="age-badge">${age} ${label}</div>
+            const row = document.createElement('div');
+            row.className = 'item';
+            row.innerHTML = `
+                <div>
+                    <div class="name">${person.name}</div>
+                    <div class="date-string">${formatted}</div>
                 </div>
+                <div class="age-badge">${age} ${label}</div>
             `;
+            container.appendChild(row);
         });
+
+        // This tells the app the widget has finished loading
+        if (typeof widget !== 'undefined') {
+            widget.complete();
+        }
     </script>
 </body>
 </html>

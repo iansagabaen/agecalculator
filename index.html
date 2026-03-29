@@ -2,37 +2,36 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <meta name="widget-compatible" content="true">
+    <meta name="js-widget-title" content="Family Ages">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <script src="https://widgetweb.app/js-widget.js"></script>
+    
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
             background-color: transparent;
             color: white;
             margin: 0;
-            padding: 8px; /* Tight padding for 2x2 space */
+            padding: 8px;
             display: flex;
             flex-direction: column;
-            justify-content: center; /* Centers the list vertically in the widget */
+            justify-content: center;
             height: 100vh;
             gap: 6px;
-            text-shadow: 0px 1px 2px rgba(0,0,0,0.6);
+            text-shadow: 0px 1px 2px rgba(0,0,0,0.8);
         }
         .row {
             display: flex;
             align-items: center;
-            font-size: 11px; /* Optimal for 2x2 widget density */
+            font-size: 11px;
             white-space: nowrap;
             letter-spacing: -0.1px;
         }
         .emoji {
             margin-right: 6px;
-            font-size: 13px; /* Slightly larger emojis for visual clarity */
+            font-size: 13px;
         }
         .age {
             font-weight: 700;
-            color: rgba(255, 255, 255, 0.95);
         }
         .sep {
             margin: 0 4px;
@@ -44,6 +43,11 @@
     <div id="widget-container"></div>
 
     <script>
+        // REQUIRED BY APP: Tells the widget we are ready immediately
+        function __wweb2WaitMillisecondsToWidgetIsReady(currentDelayMs) {
+            return 0;
+        }
+
         const family = [
             { emoji: "👰🏻‍♀️", date: "1976-04-25" },
             { emoji: "💍", date: "2009-05-22" },
@@ -65,7 +69,6 @@
         function formatDate(dateStr) {
             const d = new Date(dateStr);
             const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-            // Using UTC to ensure the date doesn't flip based on time of day
             return months[d.getUTCMonth()] + " " + d.getUTCDate() + ", " + d.getUTCFullYear();
         }
 
@@ -85,10 +88,6 @@
             `;
             container.appendChild(row);
         });
-
-        if (typeof widget !== 'undefined') {
-            widget.complete();
-        }
     </script>
 </body>
 </html>

@@ -4,57 +4,51 @@
     <meta charset="UTF-8">
     <meta name="widget-compatible" content="true">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    
     <script src="https://widgetweb.app/js-widget.js"></script>
-
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
             background-color: transparent;
             color: white;
             margin: 0;
-            padding: 14px;
+            padding: 8px; /* Tight padding for 2x2 space */
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            /* Added a text shadow so it's readable on light wallpapers */
-            text-shadow: 0px 1px 2px rgba(0,0,0,0.5);
+            justify-content: center; /* Centers the list vertically in the widget */
+            height: 100vh;
+            gap: 6px;
+            text-shadow: 0px 1px 2px rgba(0,0,0,0.6);
         }
-        .item {
+        .row {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            border-bottom: 0.5px solid rgba(255, 255, 255, 0.2);
-            padding-bottom: 6px;
+            font-size: 11px; /* Optimal for 2x2 widget density */
+            white-space: nowrap;
+            letter-spacing: -0.1px;
         }
-        .name {
+        .emoji {
+            margin-right: 6px;
+            font-size: 13px; /* Slightly larger emojis for visual clarity */
+        }
+        .age {
             font-weight: 700;
-            font-size: 16px;
-            letter-spacing: -0.2px;
+            color: rgba(255, 255, 255, 0.95);
         }
-        .age-badge {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 2px 8px;
-            border-radius: 6px;
-            font-size: 13px;
-            font-weight: 600;
-        }
-        .date-string {
-            font-size: 12px;
-            opacity: 0.8;
-            margin-top: 2px;
+        .sep {
+            margin: 0 4px;
+            opacity: 0.5;
         }
     </style>
 </head>
 <body>
-    <div id="family-list"></div>
+    <div id="widget-container"></div>
 
     <script>
         const family = [
-            { name: "Cindy", date: "1976-04-25", isAnniversary: false },
-            { name: "Aya", date: "2013-09-02", isAnniversary: false },
-            { name: "Miki", date: "2015-12-23", isAnniversary: false },
-            { name: "Anniversary", date: "2009-05-22", isAnniversary: true }
+            { emoji: "👰🏻‍♀️", date: "1976-04-25" },
+            { emoji: "💍", date: "2009-05-22" },
+            { emoji: "🎀", date: "2013-09-02" },
+            { emoji: "🧸", date: "2015-12-23" }
         ];
 
         function getAge(dateStr) {
@@ -71,29 +65,27 @@
         function formatDate(dateStr) {
             const d = new Date(dateStr);
             const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+            // Using UTC to ensure the date doesn't flip based on time of day
             return months[d.getUTCMonth()] + " " + d.getUTCDate() + ", " + d.getUTCFullYear();
         }
 
-        const container = document.getElementById('family-list');
+        const container = document.getElementById('widget-container');
         
         family.forEach(person => {
             const age = getAge(person.date);
-            const formatted = formatDate(person.date);
-            const label = person.isAnniversary ? "Years" : "Years old";
+            const formattedDate = formatDate(person.date);
             
             const row = document.createElement('div');
-            row.className = 'item';
+            row.className = 'row';
             row.innerHTML = `
-                <div>
-                    <div class="name">${person.name}</div>
-                    <div class="date-string">${formatted}</div>
-                </div>
-                <div class="age-badge">${age} ${label}</div>
+                <span class="emoji">${person.emoji}</span>
+                <span>${formattedDate}</span>
+                <span class="sep">•</span>
+                <span class="age">${age}</span>
             `;
             container.appendChild(row);
         });
 
-        // This tells the app the widget has finished loading
         if (typeof widget !== 'undefined') {
             widget.complete();
         }

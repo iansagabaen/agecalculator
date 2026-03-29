@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+            background-color: transparent;
+            color: white;
+            margin: 0;
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 0.5px solid rgba(255, 255, 255, 0.2);
+            padding-bottom: 6px;
+        }
+        .name {
+            font-weight: 700;
+            font-size: 16px;
+            letter-spacing: -0.2px;
+        }
+        .age-badge {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .date-string {
+            font-size: 12px;
+            opacity: 0.6;
+            margin-top: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div id="family-list"></div>
+
+    <script>
+        const family = [
+            { name: "Cindy", date: "1976-04-25", isAnniversary: false },
+            { name: "Aya", date: "2013-09-02", isAnniversary: false },
+            { name: "Miki", date: "2015-12-23", isAnniversary: false },
+            { name: "Anniversary", date: "2009-05-22", isAnniversary: true }
+        ];
+
+        function getAge(dateStr) {
+            const today = new Date();
+            const birthDate = new Date(dateStr);
+            let age = today.getFullYear() - birthDate.getFullYear();
+            const m = today.getMonth() - birthDate.getMonth();
+            if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
+            return age;
+        }
+
+        function formatDate(dateStr) {
+            const d = new Date(dateStr);
+            const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+            return months[d.getUTCMonth()] + " " + d.getUTCDate() + ", " + d.getUTCFullYear();
+        }
+
+        const container = document.getElementById('family-list');
+        
+        family.forEach(person => {
+            const age = getAge(person.date);
+            const formatted = formatDate(person.date);
+            const label = person.isAnniversary ? "Years" : "Years old";
+            
+            container.innerHTML += `
+                <div class="item">
+                    <div>
+                        <div class="name">${person.name}</div>
+                        <div class="date-string">${formatted}</div>
+                    </div>
+                    <div class="age-badge">${age} ${label}</div>
+                </div>
+            `;
+        });
+    </script>
+</body>
+</html>
